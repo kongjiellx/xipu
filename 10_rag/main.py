@@ -9,11 +9,9 @@ from langchain_core.runnables import RunnablePassthrough
 llm = ChatOllama(model="qwen:4b")
 
 vectorstore = Chroma(
-    embedding_function=OllamaEmbeddings(model="qwen:4b", embed_instruction="总结以下内容：",
-        query_instruction="回答问题："),
+    embedding_function=OllamaEmbeddings(model="qwen:4b"),
     persist_directory="./laodongfa.emb",
 )
-
 retriever = vectorstore.as_retriever(search_kwargs={'k': 5})
 prompt = ChatPromptTemplate.from_messages([
     ("user", """你是一个用于回答问题的助手。使用以下检索到的上下文来回答问题。如果你不知道答案，就说你不知道。使用最多三个句子并保持回答简洁。如果Context和Question无关，则忽略Context内容。
